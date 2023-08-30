@@ -45,12 +45,6 @@ class PriceCalculationForm extends AbstractType
                     ]),
                 ],
             ])
-            ->add('paymentProcessor', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'paymentProcessor field is empty']),
-                ],
-            ])
         ;
     }
 
