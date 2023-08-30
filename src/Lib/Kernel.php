@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Lib;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
