@@ -17,9 +17,23 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Lib/Entity/'
-            - '../src/Lib/Kernel.php'
-            - '../src/Lib/Repository'
+            - '../src/Lib/'
+            - '../src/Ports/'
 
+    Ports\PriceCalculation\Controller:
+        tags: [ 'controller.service_arguments' ]
+
+    Lib\Repository\ProductRepository:
+        tags: ['@doctrine.orm.default_entity_manager']
+    Lib\Repository\CountryTaxesRepository:
+        tags: [ '@doctrine.orm.default_entity_manager' ]
+    Lib\Repository\CouponsRepository:
+        tags: [ '@doctrine.orm.default_entity_manager' ]
+
+    Lib\Service\PriceCalculatorService:
+    Lib\Service\TaxCalculator\TaxCalculator: ~
+    Lib\Service\Discount\Discount: ~
+    Lib\Service\TaxCalculator\TaxCalculatorInterface: '@Lib\Service\TaxCalculator\TaxCalculator'
+    Lib\Service\Discount\DiscountInterface: '@Lib\Service\Discount\Discount'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

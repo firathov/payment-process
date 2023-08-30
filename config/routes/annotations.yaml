@@ -1,0 +1,7 @@
+controllers:
+    resource: ../../src/Ports/
+    type: annotation
+
+kernel:
+    resource: ../../src/Lib/Kernel.php
+    type: annotation
