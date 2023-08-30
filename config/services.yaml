@@ -20,9 +20,6 @@ services:
             - '../src/Lib/'
             - '../src/Ports/'
 
-    Ports\PriceCalculation\Controller:
-        tags: [ 'controller.service_arguments' ]
-
     Lib\Repository\ProductRepository:
         tags: ['@doctrine.orm.default_entity_manager']
     Lib\Repository\CountryTaxesRepository:
@@ -30,10 +27,30 @@ services:
     Lib\Repository\CouponsRepository:
         tags: [ '@doctrine.orm.default_entity_manager' ]
 
+    Ports\PriceCalculation\Controller:
+        tags: [ 'controller.service_arguments' ]
+    Ports\Payment\Controller:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+            $paymentProcessors:
+                'paypal': '@Lib\Service\Payment\Adapter\PaypalPaymentProcessorAdapter'
+                'stripe': '@Lib\Service\Payment\Adapter\StripePaymentProcessorAdapter'
+
+    Lib\Service\Payment\Adapter\PaypalPaymentProcessorAdapter:
+        arguments:
+            $paypalPaymentProcessor: '@Lib\Service\Payment\Processors\PaypalPaymentProcessor'
+
+    Lib\Service\Payment\Adapter\StripePaymentProcessorAdapter:
+        arguments:
+            $stripePaymentProcessor: '@Lib\Service\Payment\Processors\StripePaymentProcessor'
+
     Lib\Service\PriceCalculatorService:
     Lib\Service\TaxCalculator\TaxCalculator: ~
     Lib\Service\Discount\Discount: ~
     Lib\Service\TaxCalculator\TaxCalculatorInterface: '@Lib\Service\TaxCalculator\TaxCalculator'
     Lib\Service\Discount\DiscountInterface: '@Lib\Service\Discount\Discount'
+    Lib\Service\Payment\PaymentProcessorInterface: ~
+    Lib\Service\Payment\Processors\PaypalPaymentProcessor:
+    Lib\Service\Payment\Processors\StripePaymentProcessor:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
