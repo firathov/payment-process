@@ -37,10 +37,17 @@ class Controller extends AbstractController
         ProductRepository $productRepository
     ): Response {
         $form = $this->createForm(PaymentForm::class);
-
-        $form->handleRequest($request);
+        if ($request->getContentTypeFormat() === 'json') {
+            $jsonData = json_decode($request->getContent(), true);
+            $form->submit($jsonData);
+        } else {
+            $form->handleRequest($request);
+        }
         if ($form->isSubmitted() && !$form->isValid()) {
-            $message = $this->getFormError($form);
+            $message = [];
+            foreach ($form->getErrors(true) as $error) {
+                $message[] = $error->getMessage();
+            }
 
             return new JsonResponse(['success' => false, 'error' => $message], Response::HTTP_BAD_REQUEST);
         }

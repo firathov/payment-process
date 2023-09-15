@@ -26,7 +26,7 @@ abstract class AbstractController extends SymfonyAbstractController
     protected function getFormError(FormInterface $form): array
     {
         $errors = [];
-        foreach ($form->getErrors() as $error) {
+        foreach ($form->getErrors(true) as $error) {
             $errors[] = $error->getMessage();
         }
 
